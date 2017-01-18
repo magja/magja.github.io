@@ -6,6 +6,7 @@ In doing so, Magja bridges the gap between the PHP system and Java ecosystem by 
 
 ## Core Features
 Magja currently provides the following features:
+
 - Basic support for Magento 1.x SOAP API V1
 - Allows access to:
   - Product data
