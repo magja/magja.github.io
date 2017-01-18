@@ -1,37 +1,92 @@
-## Welcome to Magja 
+# Welcome to Magja
 
-You can use the [editor on GitHub](https://github.com/magja/magja.github.io/edit/master/README.md) to maintain and preview the content for your website in Markdown files.
+Magento is a popular and emerging open-source e-commerce platform written in PHP with a market share of [around 30%](https://en.wikipedia.org/wiki/Magento).
+Magja provides a Java Connector for Magento's Core API that allows easy integration with the shop installation and allows for exchange data offered by the API.
+In doing so, Magja bridges the gap between the PHP system and Java ecosystem by offering a Java-Style client for integration in any kind  of applications.
 
-Whenever you commit to this repository, GitHub Pages will run [Jekyll](https://jekyllrb.com/) to rebuild the pages in your site, from the content in your Markdown files.
+## Core Features
+Magja currently provides the following features:
+* Basic support for Magento 1.x SOAP API V1
+* Allows access to:
+  * Product data
+  * Product media
+  * Product link
+  * Product categories
+  * Product attributes
+  * Country data
+  * Region data
+  * Customer data
+  * Order data
+  * Invoice data
+  * Cart data
+* Open for custom extensions of the API (without code generation)
 
-### Markdown
+## Getting started
 
-Markdown is a lightweight and easy-to-use syntax for styling your writing. It includes conventions for
+## Installation and configuration
 
-```markdown
-Syntax highlighted code block
+Magja artifacts are available in the Sonatype Maven repository. Please put the following repository definition into your `pom.xml`:
 
-# Header 1
-## Header 2
-### Header 3
+    <repositories>
+      <repository>
+        <id>sonatype</id>
+        <name>Sonatype Repository</name>
+        <url>http://oss.sonatype.org/content/groups/public</url>
+      </repository>
+    </repositories>
 
-- Bulleted
-- List
+and add the dependency to your project:
 
-1. Numbered
-2. List
+    <dependency>
+      <groupId>com.google.code.magja</groupId>
+      <artifactId>magja</artifactId>
+      <version>1.0.3-SNAPSHOT</version>
+    </dependency>
 
-**Bold** and _Italic_ and `Code` text
+to get started. In order to connect to your Magento Shop installation, you need to put `magento-api.properties` on your classpath.
+You can copy an example properties from samples folder. Essentially, the properties are self-explanatory:
 
-[Link](url) and ![Image](src)
-```
+    # SOAP XML/RPC user
+    magento-api-username=<replace with user>
 
-For more details see [GitHub Flavored Markdown](https://guides.github.com/features/mastering-markdown/).
+    # SOAP XML/RPC api key
+    magento-api-password=<replace with api key>
 
-### Jekyll Themes
+    # URL of the Magento installation
+    # If your shop is installed not using a prefix e.g. /magento
+    # please add the prefix to the path:
+    # http://<yourmagento-host>/magento/index.php/api/soap/
+    magento-api-url=http://<yourmagento-host>/index.php/api/soap/
 
-Your Pages site will use the layout and styles from the Jekyll theme you have selected in your [repository settings](https://github.com/magja/magja.github.io/settings). The name of this theme is saved in the Jekyll `_config.yml` configuration file.
+    # the ID of the default attribute set
+    default-attribute-set-id=4
 
-### Support or Contact
+    # the ID of the default root category
+    default-root-category-id=2
 
-Having trouble with Pages? Check out our [documentation](https://help.github.com/categories/github-pages-basics/) or [contact support](https://github.com/contact) and we’ll help you sort it out.
+## Basic usage
+
+Magja is offering a set of services which can be used to access the Magento API. A service can be obtained
+from the `RemoteServiceFactory` instance. The sample usage is demonstrated below:
+
+    Logger log = LoggerFactory.getLogger("logger");
+    RemoteServiceFactory remoteServiceFactory = new RemoteServiceFactory(MagentoSoapClient.getInstance());
+    ProductRemoteService productService = remoteServiceFactory.getProductRemoteService();
+
+    Product product = new Product();
+    product.setSku("0001-QWER-12090");
+    product.setName("Milk");
+
+    try {
+      productService.add(product);
+
+      List<Product> allProducts = productService.listAll();
+      for (Product shopProduct : allProducts) {
+        log.info("{}", shopProduct);;
+      }
+
+    } catch (ServiceException e) {
+      log.error("Error manipulating products", e);
+    } catch (NoSuchAlgorithmException e) {
+      log.error("Error manipulating products", e);
+    }
