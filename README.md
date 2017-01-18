@@ -6,20 +6,20 @@ In doing so, Magja bridges the gap between the PHP system and Java ecosystem by 
 
 ## Core Features
 Magja currently provides the following features:
-* Basic support for Magento 1.x SOAP API V1
-* Allows access to:
-  * Product data
-  * Product media
-  * Product link
-  * Product categories
-  * Product attributes
-  * Country data
-  * Region data
-  * Customer data
-  * Order data
-  * Invoice data
-  * Cart data
-* Open for custom extensions of the API (without code generation)
+- Basic support for Magento 1.x SOAP API V1
+- Allows access to:
+  - Product data
+  - Product media
+  - Product link
+  - Product categories
+  - Product attributes
+  - Country data
+  - Region data
+  - Customer data
+  - Order data
+  - Invoice data
+  - Cart data
+- Open for custom extensions of the API (without code generation)
 
 ## Getting started
 
@@ -90,3 +90,30 @@ from the `RemoteServiceFactory` instance. The sample usage is demonstrated below
     } catch (NoSuchAlgorithmException e) {
       log.error("Error manipulating products", e);
     }
+
+## Advanced configuration
+
+There are additional configuration properties, which can be set up in the properties file.
+
+### Running behind the proxy
+
+If you want to use the client behind a HTTP proxy, you can specify the settings in `magento-api.properties`:
+
+    # HTTP proxy settings, default is false
+    http-proxy-enabled=true
+    http-proxy-host=localhost
+    http-proxy-port=8080
+
+    # HTTP proxy auth settings, default is false
+    http-proxy-auth-enabled=true
+    http-proxy-username=user
+    http-proxy-password=pass
+
+### Accessing HTTP-Basic Auth protected installation
+
+If your shop is protected with HTTP Basic Authentication, you can pass a username and password using the following properties:
+
+    # HTTP auth settings, default is false
+    http-auth-enabled=true
+    http-username=user
+    http-password=pass
