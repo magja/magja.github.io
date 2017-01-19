@@ -31,21 +31,25 @@ Magja allows for exchange of the following data with your Magento installation:
 
 Magja artifacts are available in the Sonatype Maven repository. Please put the following repository definition into your `pom.xml`:
 
-    <repositories>
-      <repository>
-        <id>sonatype</id>
-        <name>Sonatype Repository</name>
-        <url>http://oss.sonatype.org/content/groups/public</url>
-      </repository>
-    </repositories>
+```xml
+<repositories>
+  <repository>
+    <id>sonatype</id>
+    <name>Sonatype Repository</name>
+    <url>http://oss.sonatype.org/content/groups/public</url>
+  </repository>
+</repositories>
+```
 
 and add the dependency to your project:
 
-    <dependency>
-      <groupId>com.google.code.magja</groupId>
-      <artifactId>magja</artifactId>
-      <version>1.0.3-SNAPSHOT</version>
-    </dependency>
+```xml
+<dependency>
+  <groupId>com.google.code.magja</groupId>
+  <artifactId>magja</artifactId>
+  <version>1.0.3-SNAPSHOT</version>
+</dependency>
+```
 
 to get started. In order to connect to your Magento Shop installation, you need to put `magento-api.properties` on your classpath.
 You can copy an example properties from samples folder. Essentially, the properties are self-explanatory:
@@ -75,24 +79,26 @@ For further configuration please refer the [configuration guide](configuration.h
 Magja is offering a set of services which can be used to access the Magento API. A service can be obtained
 from the `RemoteServiceFactory` instance. The sample usage is demonstrated below:
 
-    Logger log = LoggerFactory.getLogger("logger");
-    RemoteServiceFactory remoteServiceFactory = new RemoteServiceFactory(MagentoSoapClient.getInstance());
-    ProductRemoteService productService = remoteServiceFactory.getProductRemoteService();
+```java
+Logger log = LoggerFactory.getLogger("logger");
+RemoteServiceFactory remoteServiceFactory = new RemoteServiceFactory(MagentoSoapClient.getInstance());
+ProductRemoteService productService = remoteServiceFactory.getProductRemoteService();
 
-    Product product = new Product();
-    product.setSku("0001-QWER-12090");
-    product.setName("Milk");
+Product product = new Product();
+product.setSku("0001-QWER-12090");
+product.setName("Milk");
 
-    try {
-      productService.add(product);
+try {
+  productService.add(product);
 
-      List<Product> allProducts = productService.listAll();
-      for (Product shopProduct : allProducts) {
-        log.info("{}", shopProduct);;
-      }
+  List<Product> allProducts = productService.listAll();
+  for (Product shopProduct : allProducts) {
+    log.info("{}", shopProduct);;
+  }
 
-    } catch (ServiceException e) {
-      log.error("Error manipulating products", e);
-    } catch (NoSuchAlgorithmException e) {
-      log.error("Error manipulating products", e);
-    }
+} catch (ServiceException e) {
+  log.error("Error manipulating products", e);
+} catch (NoSuchAlgorithmException e) {
+  log.error("Error manipulating products", e);
+}
+```
